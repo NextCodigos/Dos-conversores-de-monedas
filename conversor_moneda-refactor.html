@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
+    <meta charset="utf-8">
+    <title>Conversor de Divisas</title>
+    <link rel="stylesheet" type="text/css" href="css/estilos.css">
+    <script type="text/javascript">
+        let tiposDeCambio = {
+            "yen": 125,
+            "dolar": 1.1,
+            // Puedes añadir más monedas aquí
+        };
+
+        window.onload = inicio;
+
+        function inicio() {
+            // Inicializa los campos de entrada con los tipos de cambio
+            for (let moneda in tiposDeCambio) {
+                document.getElementById(`input_cambio_${moneda}`).value = tiposDeCambio[moneda];
+                document.getElementById(`boton_${moneda}`).onclick = () => ir_a_convertir(moneda);
+                document.getElementById(`dinero_${moneda}`).onkeydown = (event) => teclado(event, moneda);
+            }
+        }
+
+        function teclado(event, moneda) {
+            if (event.keyCode == 13) {
+                ir_a_convertir(moneda);
+            }
+        }
+
+        function convertir(cantidad, cambio) {
+            return cantidad * cambio;
+        }
+
+        function ir_a_convertir(moneda) {
+            let cambio = document.getElementById(`input_cambio_${moneda}`).value;
+            let cantidad = document.getElementById(`dinero_${moneda}`).value;
+            cantidad = (cantidad !== "") ? cantidad : 1;
+            let resultado = convertir(cantidad, cambio);
+            document.getElementById(`conversiones_${moneda}`).innerHTML += `${cantidad} euros son ${resultado} ${moneda}<br>`;
+            document.getElementById(`dinero_${moneda}`).value = "";
+            document.getElementById(`dinero_${moneda}`).focus();
+        }
+    </script>
+</head>
+<body>
+    <main>
+        <div class="contenedor">
+            <input id="dinero_yen" placeholder="Escribe cantidad en euros" autofocus>
+            <button id="boton_yen">Convertir a Yenes</button>
+        </div>
+        <div class="caja_cambio">1 € son <input id="input_cambio_yen"/> yenes</div>
+        <div id="conversiones_yen"></div>
+    </main>  
+    <main>
+        <div class="contenedor2">
+            <input id="dinero_dolar" placeholder="Escribe cantidad en euros">
+            <button id="boton_dolar">Convertir a Dólares</button>
+        </div>
+        <div class="caja_cambio2">1 € son <input id="input_cambio_dolar"/> dólares</div>
+        <div id="conversiones_dolar"></div>
+    </main>  
+</body>
+</html>
